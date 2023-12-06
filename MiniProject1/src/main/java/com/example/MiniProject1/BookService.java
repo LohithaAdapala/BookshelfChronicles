@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class BookService implements BookRepository{
     private HashMap<Integer, Book> hmap = new HashMap<Integer,Book>();
+    int uniqueBookId=3;
     BookService(){
         Book b1= new Book(1,"It ends with us","itEndsWithUs.jpg");
         Book b2= new Book(2,"Verity","verity.jpg");
@@ -31,6 +32,43 @@ public class BookService implements BookRepository{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return book;
+    }
+
+    @Override
+    public Book addBook(Book book){
+        book.setBookId(uniqueBookId);
+        hmap.put(uniqueBookId,book);
+        uniqueBookId+=1;
+        return book;
+
+    }
+
+    @Override
+    public Book updateBook(int bookId, Book book){
+        Book existingBook = hmap.get(bookId);
+        if(existingBook==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        if(book.getBookName()!=null){
+            existingBook.setBookName(book.getBookName());
+        }
+        if(book.getImageUrl()!=null){
+            existingBook.setImageUrl(book.getImageUrl());
+        }
+        return existingBook;
+
+    }
+
+    @Override
+    public void deleteBook(int bookId){
+        Book book=hmap.get(bookId);
+        if(book==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        else{
+            hmap.remove(bookId);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
     }
 
 

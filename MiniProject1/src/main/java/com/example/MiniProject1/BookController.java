@@ -1,8 +1,6 @@
 package com.example.MiniProject1;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.example.MiniProject1.BookService;
 import com.example.MiniProject1.Book;
 
@@ -19,8 +17,26 @@ public class BookController {
 
     @GetMapping("/books/{bookId}")
     public Book getBookById(@PathVariable("bookId") int bookId){
+
         return bookService.getBookById(bookId);
     }
+
+    @PostMapping("/books")
+    public Book addBook(@RequestBody Book book){
+        return bookService.addBook(book);
+    }
+
+    @PutMapping("books/{bookId}")
+    public Book updateBook(@PathVariable("bookId") int bookId, @RequestBody Book book){
+        return bookService.updateBook(bookId,book);
+    }
+
+    @DeleteMapping("books/{bookId}")
+    public void deleteBook(@PathVariable("bookId") int bookId){
+        bookService.deleteBook(bookId);
+    }
+
+
 
 
 
